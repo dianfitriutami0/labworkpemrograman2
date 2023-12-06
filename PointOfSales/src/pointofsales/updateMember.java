@@ -238,52 +238,46 @@ new dataMember().setVisible(true);
     }//GEN-LAST:event_cancelActionPerformed
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-        String NewIdMember = this.txtNewIdMember.getText();// TODO add your handling code here:
-        String querySelect = "SELECT * FROM datamember WHERE id_member=?";
-        java.sql.Connection kon = (Connection) konektor.koneksi();
-        try(PreparedStatement preparedStatementSelect = kon.prepareStatement(querySelect)){
-            preparedStatementSelect.setString(1, NewIdMember);
-            ResultSet resultSet = preparedStatementSelect.executeQuery();
-            
-            if (resultSet.next()){
-                String IDMemberLama = resultSet.getString("ID MEMBER");
-                String NamaMemberLama = resultSet.getString("NAMA MEMBER");
-                String TeleponLama = resultSet.getString("TELEPON");
-                String AlamatLama = resultSet.getString("ALAMAT");
-                
-                String IDMemberBaru = this.txtNewIdMember.getText();
-                String NamaMemberBaru = this.txtNewNamaMember.getText();
-                String TeleponBaru = this.txtNewTelepon.getText();
-                String AlamatBaru = this.txtNewAlamat.getText();
-                
-                if (!IDMemberLama.equals(IDMemberBaru) || !NamaMemberLama.equals(NamaMemberBaru) || !TeleponLama.equals(TeleponBaru) || !AlamatLama.equals(AlamatBaru)){
-                    String queryUpdate = "UPDATE datamember SET nama=?, telp=?, alamat=? WHERE id_member=?";
-                    try(PreparedStatement preparedStatementUpdate = kon.prepareStatement(queryUpdate)){
-                        preparedStatementUpdate.setString(1, IDMemberBaru);
-                        preparedStatementUpdate.setString(2, NamaMemberBaru);
-                        preparedStatementUpdate.setString(3, TeleponBaru);
-                        preparedStatementUpdate.setString(4, AlamatBaru);
-                        
-                        int result = preparedStatementUpdate.executeUpdate();
-                        preparedStatementUpdate.close();
-                        
-                        if(result > 0){
-                            JOptionPane.showMessageDialog(this, "Data Berhasil diupdate", "Sukses", JOptionPane.INFORMATION_MESSAGE);
-                        }else{
-                            JOptionPane.showMessageDialog(this, "Gagal menyimpan data", "Error", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                    }
-                }else {
-                    JOptionPane.showMessageDialog(this, "Data tidak berubah", "Error", JOptionPane.INFORMATION_MESSAGE);
-                }
-                
-            }JOptionPane.showMessageDialog(this, "Data tidak ditemukan", "Error", JOptionPane.INFORMATION_MESSAGE);
-        }  catch (SQLException e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(this, "Failed to connect to the database. Check the connection details.", "Error", JOptionPane.ERROR_MESSAGE);
-}
+        String IDMemberBaru = this.txtNewIdMember.getText();
+    String querySelect = "SELECT * FROM datamember WHERE id_member=?";
+    java.sql.Connection kon = (Connection) konektor.koneksi();
 
-// TODO add your handling code here:
+       try (PreparedStatement preparedStatementSelect = kon.prepareStatement(querySelect)) {
+        preparedStatementSelect.setString(1, IDMemberBaru);
+        ResultSet resultSet = preparedStatementSelect.executeQuery();
+        
+        if (resultSet.next()) {
+                // Data ditemukan, lakukan pembaruan
+                String queryUpdate = "UPDATE datamember SET nama=?, telp=?, alamat=? WHERE id_member=?";
+                try (PreparedStatement preparedStatementUpdate = kon.prepareStatement(queryUpdate)) {
+                    String NamaMemberBaru = this.txtNewNamaMember.getText();
+                    String TeleponBaru = this.txtNewTelepon.getText();
+                    String AlamatBaru = this.txtNewAlamat.getText();
+
+                    preparedStatementUpdate.setString(1, NamaMemberBaru);
+                    preparedStatementUpdate.setString(2, TeleponBaru);
+                    preparedStatementUpdate.setString(3, AlamatBaru);
+                    preparedStatementUpdate.setString(4, IDMemberBaru);
+
+                    int result = preparedStatementUpdate.executeUpdate();
+                    preparedStatementUpdate.close();
+
+                    if (result > 0) {
+                        JOptionPane.showMessageDialog(this, "Data Berhasil diupdate", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Gagal menyimpan data", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            } else {
+                // Tidak ada data dengan ID yang diberikan
+                JOptionPane.showMessageDialog(this, "Data tidak ditemukan", "Error", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Gagal terhubung ke database", "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(updateMember.class.getName()).log(Level.SEVERE, null, e);
+        }new dataMember().setVisible(true);
+        dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_saveActionPerformed
 
     /**
@@ -319,7 +313,7 @@ new dataMember().setVisible(true);
                 new updateMember().setVisible(true);
             }
         });
-    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancel;

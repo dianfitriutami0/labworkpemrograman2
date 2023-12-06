@@ -6,11 +6,14 @@ package pointofsales;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 /**
  *
  * @author ACER
@@ -20,11 +23,18 @@ public class dataMember extends javax.swing.JFrame {
     /**
      * Creates new form dataMember
      */
+    private DefaultTableModel model;
     public dataMember() {
         initComponents();
         loadtable();
         
-   
+        search.setFont(new java.awt.Font("Times New Roman", 1, 18));
+        search.setText("SEARCH");
+        search.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchActionPerformed(evt);
+        }
+        });
         try {
              BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
              setIconImage(beam); 
@@ -38,7 +48,7 @@ public class dataMember extends javax.swing.JFrame {
     
     
     private void loadtable(){
-    DefaultTableModel model = new DefaultTableModel();
+    model = new DefaultTableModel();
     model.addColumn("NO");
     model.addColumn("ID MEMBER");
     model.addColumn("NAMA MEMBER");
@@ -144,6 +154,11 @@ public class dataMember extends javax.swing.JFrame {
 
         delete.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         delete.setText("DELETE");
+        delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteActionPerformed(evt);
+            }
+        });
 
         cancel.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         cancel.setText("CANCEL");
@@ -163,6 +178,11 @@ public class dataMember extends javax.swing.JFrame {
 
         search.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         search.setText("SEARCH");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
 
         jTextField1.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
 
@@ -247,6 +267,77 @@ new dataMember().setVisible(true);
 new mainMenu().setVisible(true);
     dispose();        // TODO add your handling code here:        // TODO add your handling code here:
     }//GEN-LAST:event_exitActionPerformed
+
+    private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
+    int selectedRow = tblMember.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih baris yang akan dihapus!");
+    } else {
+        String IDMemberToDelete = tblMember.getValueAt(selectedRow, 1).toString(); // Menggunakan index kolom ID Member
+
+        model.removeRow(selectedRow);
+
+        try {
+            String query = "DELETE FROM datamember WHERE id_member=?";
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            try (PreparedStatement ps = kon.prepareStatement(query)) {
+                ps.setString(1, IDMemberToDelete);
+                int result = ps.executeUpdate();
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Data berhasil dihapus.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Gagal menghapus data");
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menghapus data", "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(updateMember.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    }//GEN-LAST:event_deleteActionPerformed
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+    String keyword = jTextField1.getText().trim();
+    
+    // Mengecek apakah keyword tidak kosong
+    if (!keyword.isEmpty()) {
+        try {
+            // Membersihkan model tabel sebelum menambahkan data hasil pencarian
+            model.setRowCount(0);
+            
+            // Query pencarian data member berdasarkan ID atau Nama
+            String query = "SELECT * FROM datamember WHERE id_member LIKE ? OR nama LIKE ?";
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            try (PreparedStatement ps = kon.prepareStatement(query)) {
+                ps.setString(1, "%" + keyword + "%");
+                ps.setString(2, "%" + keyword + "%");
+                
+                try (ResultSet data = ps.executeQuery()) {
+                    int nomor = 1;
+                    while (data.next()) {
+                        model.addRow(new Object[]{
+                            nomor++,
+                            data.getString("id_member"),
+                            data.getString("nama"),
+                            data.getString("telp"),
+                            data.getString("alamat")
+                        });
+                    }
+                }
+                if (tblMember.getRowCount() > 0) {
+                tblMember.setRowSelectionInterval(0, 0);
+            }}
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat mencari data", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        } else {
+        // Menampilkan pesan jika field pencarian kosong
+        JOptionPane.showMessageDialog(this, "Masukkan kata kunci pencarian");
+    }
+      // TODO add your handling code here:
+    }//GEN-LAST:event_searchActionPerformed
 
     /**
      * @param args the command line arguments
