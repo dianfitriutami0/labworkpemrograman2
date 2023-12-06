@@ -31,7 +31,7 @@ public class inventoriBarang extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(inventoriBarang.class.getName()).log(Level.SEVERE, null, ex);
         }
-       this.setTitle("Inventory Barang");
+       this.setTitle("Inventory Barang haha");
        setLocationRelativeTo(null);
     }
     
