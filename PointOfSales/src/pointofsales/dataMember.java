@@ -41,7 +41,7 @@ public class dataMember extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
     model.addColumn("NO");
     model.addColumn("ID MEMBER");
-    model.addColumn("NAMA MWMBER");
+    model.addColumn("NAMA MEMBER");
     model.addColumn("TELEPON");
     model.addColumn("ALAMAT");
     
@@ -86,9 +86,7 @@ public class dataMember extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(253, 227, 227));
-        setMaximumSize(new java.awt.Dimension(700, 500));
         setMinimumSize(new java.awt.Dimension(700, 500));
-        setPreferredSize(new java.awt.Dimension(700, 500));
 
         jPanel2.setBackground(new java.awt.Color(249, 234, 234));
 
@@ -231,7 +229,8 @@ public class dataMember extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-        // TODO add your handling code here:
+new updateMember().setVisible(true);
+    dispose();          // TODO add your handling code here:           // TODO add your handling code here:
     }//GEN-LAST:event_editActionPerformed
 
     private void inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputActionPerformed
