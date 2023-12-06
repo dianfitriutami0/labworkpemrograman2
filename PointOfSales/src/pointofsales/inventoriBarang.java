@@ -6,11 +6,14 @@ package pointofsales;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 /**
  *
  * @author ACER
@@ -20,11 +23,18 @@ public class inventoriBarang extends javax.swing.JFrame {
     /**
      * Creates new form inventoriBarang
      */
+    private DefaultTableModel model;
     public inventoriBarang() {
         initComponents();
         loadtable();
         
-   
+        search.setFont(new java.awt.Font("Times New Roman", 1, 18));
+        search.setText("SEARCH");
+        search.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+        searchActionPerformed(evt);
+        }
+        });
         try {
              BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
              setIconImage(beam); 
@@ -35,40 +45,8 @@ public class inventoriBarang extends javax.swing.JFrame {
        setLocationRelativeTo(null);
     }
     
-    public class editInventory extends javax.swing.JFrame {
-
-        private String nomor;
-        private String idBarang;
-        private String namaBarang;
-        private String harga;
-        private String stok;
-
-        public editInventory(String nomor, String idBarang, String namaBarang, String harga, String stok) {
-            initComponents();
-
-            this.nomor = nomor;
-            this.idBarang = idBarang;
-            this.namaBarang = namaBarang;
-            this.harga = harga;
-            this.stok = stok;
-
-            txtNomor.setText(nomor);
-            txtIdBarang.setText(idBarang);
-            txtNamaBarang.setText(namaBarang);
-            txtHarga.setText(harga);
-            txtPersediaan.setText(stok);
-        }
-
-        // ... (mungkin ada metode atau logika tambahan jika diperlukan)
-
-    } // Penutup kelas editInventory
-
-    // ... (metode atau variabel lainnya)
-
-
-    
     private void loadtable(){
-    DefaultTableModel model = new DefaultTableModel();
+    model = new DefaultTableModel();
     model.addColumn("NO");
     model.addColumn("ID BARANG");
     model.addColumn("NAMA BARANG");
@@ -283,55 +261,50 @@ new inputInventory().setVisible(true);
     }//GEN-LAST:event_inputActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-String keyword = jTextField1.getText();
+String keyword = jTextField1.getText().trim();
+    
+    // Mengecek apakah keyword tidak kosong
     if (!keyword.isEmpty()) {
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("NO");
-        model.addColumn("ID BARANG");
-        model.addColumn("NAMA BARANG");
-        model.addColumn("HARGA");
-        model.addColumn("STOK");
-
         try {
-            // Query untuk mencari data berdasarkan keyword
-            String query = "SELECT * FROM inventoribarang WHERE nama_barang LIKE '%" + keyword + "%'";
+            // Membersihkan model tabel sebelum menambahkan data hasil pencarian
+            model.setRowCount(0);
+            
+            // Query pencarian data member berdasarkan ID atau Nama
+            String query = "SELECT * FROM inventoribarang WHERE id_barang LIKE ? OR nama_barang LIKE ?";
             java.sql.Connection kon = (Connection) konektor.koneksi();
-            java.sql.Statement stm = kon.createStatement();
-            java.sql.ResultSet data = stm.executeQuery(query);
-
-            while (data.next()) {
-                model.addRow(new Object[]{data.getString(1), data.getString(2),
-                        data.getString(3), data.getString(4), data.getString(5)});
-            }
-            tblBarang.setModel(model);
-        } catch (Exception b) {
-            JOptionPane.showMessageDialog(null, b.getMessage());
+            try (PreparedStatement ps = kon.prepareStatement(query)) {
+                ps.setString(1, "%" + keyword + "%");
+                ps.setString(2, "%" + keyword + "%");
+                
+                try (ResultSet data = ps.executeQuery()) {
+                    int nomor = 1;
+                    while (data.next()) {
+                        model.addRow(new Object[]{
+                            nomor++,
+                            data.getString("id_barang"),
+                            data.getString("nama_barang"),
+                            data.getString("harga"),
+                            data.getString("stok")
+                        });
+                    }
+                }
+                if (tblBarang.getRowCount() > 0) {
+                tblBarang.setRowSelectionInterval(0, 0);
+            }}
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat mencari data", "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } else {
-        // Jika kotak pencarian kosong, reload tabel
-        loadtable();
+        } else {
+        // Menampilkan pesan jika field pencarian kosong
+        JOptionPane.showMessageDialog(this, "Masukkan kata kunci pencarian");
     }
         // TODO add your handling code here:
     }//GEN-LAST:event_searchActionPerformed
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-int selectedRow = tblBarang.getSelectedRow();
-    if (selectedRow != -1) {
-        // Ambil data dari baris yang dipilih
-        String nomor = tblBarang.getValueAt(selectedRow, 0).toString();
-        String idBarang = tblBarang.getValueAt(selectedRow, 1).toString();
-        String namaBarang = tblBarang.getValueAt(selectedRow, 2).toString();
-        String harga = tblBarang.getValueAt(selectedRow, 3).toString();
-        String stok = tblBarang.getValueAt(selectedRow, 4).toString();
-
-        // Panggil frame editInventory dengan data yang dipilih
-        editInventory editFrame = new editInventory(nomor, idBarang, namaBarang, harga, stok);
-        editFrame.setVisible(true);
-        dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Pilih baris terlebih dahulu");
-    }
-
+new updateBarang().setVisible(true);
+    dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_editActionPerformed
 
     private void tblBarangComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_tblBarangComponentAdded
@@ -339,19 +312,32 @@ int selectedRow = tblBarang.getSelectedRow();
     }//GEN-LAST:event_tblBarangComponentAdded
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-int selectedRow = tblBarang.getSelectedRow();
-    if (selectedRow != -1) {
-        int confirm = JOptionPane.showConfirmDialog(this, "Apakah Anda yakin untuk menghapus data ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
-        if (confirm == JOptionPane.YES_OPTION) {
-            // Implementasi penghapusan data dari database
-            // ...
-
-            // Setelah menghapus, reload tabel
-            loadtable();
-        }
+    int selectedRow = tblBarang.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Pilih baris yang akan dihapus!");
     } else {
-        JOptionPane.showMessageDialog(this, "Pilih baris terlebih dahulu");
-    }        // TODO add your handling code here:
+        String IDMemberToDelete = tblBarang.getValueAt(selectedRow, 1).toString(); // Menggunakan index kolom ID Member
+
+        model.removeRow(selectedRow);
+
+        try {
+            String query = "DELETE FROM inventoribarang WHERE id_barang=?";
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            try (PreparedStatement ps = kon.prepareStatement(query)) {
+                ps.setString(1, IDMemberToDelete);
+                int result = ps.executeUpdate();
+                if (result > 0) {
+                    JOptionPane.showMessageDialog(this, "Data berhasil dihapus.");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Gagal menghapus data");
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menghapus data", "Error", JOptionPane.ERROR_MESSAGE);
+            Logger.getLogger(updateMember.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
