@@ -59,11 +59,9 @@ public class updateBarang extends javax.swing.JFrame {
         save = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(700, 500));
-        setMinimumSize(new java.awt.Dimension(700, 500));
-        setPreferredSize(new java.awt.Dimension(700, 500));
 
         jPanel1.setBackground(new java.awt.Color(252, 228, 228));
+        jPanel1.setPreferredSize(new java.awt.Dimension(700, 500));
 
         jPanel2.setBackground(new java.awt.Color(255, 51, 0));
 
@@ -195,7 +193,7 @@ public class updateBarang extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancel)
                     .addComponent(save))
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
