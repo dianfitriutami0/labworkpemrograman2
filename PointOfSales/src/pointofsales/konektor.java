@@ -19,7 +19,7 @@ public class konektor {
     public static Connection koneksi() {
         
         try {
-            String url = "jdbc:mysql://localhost:3306/phpmyadmin";
+            String url = "jdbc:mysql://localhost:3306/pointofsales";
             String user = "root";
             String pass = "";
             
