@@ -25,6 +25,66 @@ public class transaksi extends javax.swing.JFrame {
         int jumlahBaris = jTable1.getRowCount();
         int totalBiaya = 0;
         int jumlahBarang, hargaBarang;
+        for (int i = 0; i < jumlahBaris; i++){
+            jumlahBarang = Integer.parseInt(jTable1.getValueAt(i, 3).toString());
+            hargaBarang = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
+            totalBiaya = totalBiaya + (jumlahBarang * hargaBarang);
+        }
+        txtTotalBayar.setText(String.valueOf(totalBiaya));
+        txtTampil.setText("Rp " + totalBiaya + ",00");
+    }
+    
+    private void autonumber(){
+        try{
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            Statement s = kon.createStatement();
+            String sql = "SELECT * FROM datapenjualan ORDER BY NoFaktur DESC";
+            ResultSet r = s.executeQuery(sql);
+            if (r.next()){
+                String NoFaktur = r.getString("NoFaktur").substring(2);
+                String TR = "" + (Integer.parseInt(NoFaktur)+1);
+                String Nol = "";
+                
+                if (TR.length()==1)
+                {Nol = "000";}
+                else if (TR.length()==2)
+                {Nol = "00";}
+                else if (TR.length()==3)
+                {Nol = "0";}
+                else if (TR.length()==4)
+                {Nol = "";}
+                txtNoTransaksi.setText("TR" + Nol + TR);
+                    }else {
+                txtNoTransaksi.setText("TR0001");
+            }
+            r.close();
+            s.close();
+        }catch (Exception e){
+            System.out.println("autonumber error");
+        }
+    }
+    
+    public void loadData(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.addRow(new Object[]{
+            txtNoTransaksi.getText(),
+            txtIdBarang.getText(),
+            txtNamaBarang.getText(),
+            txtJumlah.getText(),
+            txtHarga.getText(),
+            txtTotalBayar.getText()
+            
+    });}
+    
+    public void kosong(){
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
+        while (model.getRowCount()>0){
+            model.removeRow(0);
+        }
+    }
+    
+    public void utama(){
         
     }
     
@@ -341,11 +401,12 @@ public class transaksi extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtNoTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(txtNoTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -399,7 +460,7 @@ public class transaksi extends javax.swing.JFrame {
                             .addComponent(jLabel13)
                             .addComponent(txtBayar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtKembalian, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14))
                 .addContainerGap())
