@@ -85,11 +85,68 @@ public class transaksi extends javax.swing.JFrame {
     }
     
     public void utama(){
+        txtNoTransaksi.setText("");
+        txtIdBarang.setText("");
+        txtNamaBarang.setText("");
+        txtHarga.setText("");
+        txtJumlah.setText("");
+        autonumber();
+    }
+    
+    public void clear(){
+        txtIdCustomer.setText("");
+        txtMember.setSelectedItem("null");
+        txtTotalBayar.setText("0");
+        txtBayar.setText("0");
+        txtKembalian.setText("0");
+        txtTampil.setText("0");
+    }
+    
+    public void clear2(){
+        txtIdBarang.setText("");
+        txtNamaBarang.setText("");
+        txtHarga.setText("");
+        txtJumlah.setText("");
+    }
+    
+    public void tambahTransaksi(){
+        int jumlah, harga, total;
         
+        jumlah = Integer.valueOf(txtJumlah.getText());
+        harga = Integer.valueOf(txtHarga.getText());
+        total = jumlah * harga;
+        
+        txtTotalBayar.setText(String.valueOf(total));
+        
+        loadData();
+        totalBiaya();
+        clear2();
+        txtIdBarang.requestFocus();
     }
     
     public transaksi() {
         initComponents();
+        
+        model = new DefaultTableModel();
+        
+        jTable1.setModel(model);
+        
+        model.addColumn("No Transaksi");
+        model.addColumn("ID Barang");
+        model.addColumn("Nama Barang");
+        model.addColumn("Jumlah");
+        model.addColumn("Harga");
+        model.addColumn("Total");
+        
+        utama();
+        Date date = new Date();
+        SimpleDateFormat s = new SimpleDateFormat("dd-MM-yyyy");
+        
+        txtTanggal.setText(s.format(date));
+        txtTotalBayar.setText("0");
+        txtBayar.setText("0");
+        txtKembalian.setText("0");
+        txtIdCustomer.requestFocus();
     }
 
     /**
@@ -111,7 +168,7 @@ public class transaksi extends javax.swing.JFrame {
         txtNoTransaksi = new javax.swing.JTextField();
         txtIdCustomer = new javax.swing.JTextField();
         txtNamaCustomer = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        txtTanggal = new javax.swing.JTextField();
         txtMember = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -193,8 +250,8 @@ public class transaksi extends javax.swing.JFrame {
             }
         });
 
-        jTextField4.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        jTextField4.setEnabled(false);
+        txtTanggal.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        txtTanggal.setEnabled(false);
 
         txtMember.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         txtMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Member", "Non Member" }));
@@ -243,6 +300,11 @@ public class transaksi extends javax.swing.JFrame {
 
         tambah.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         tambah.setText("Tambah");
+        tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahActionPerformed(evt);
+            }
+        });
 
         hapus.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         hapus.setText("Hapus");
@@ -348,7 +410,7 @@ public class transaksi extends javax.swing.JFrame {
                                 .addGap(63, 63, 63)
                                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(27, 27, 27)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(9, 9, 9)
                                 .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))))
@@ -404,7 +466,7 @@ public class transaksi extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTanggal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel5)
                         .addComponent(txtNoTransaksi, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -491,6 +553,7 @@ public class transaksi extends javax.swing.JFrame {
 
     private void txtJumlahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtJumlahActionPerformed
         // TODO add your handling code here:
+        tambahTransaksi();
     }//GEN-LAST:event_txtJumlahActionPerformed
 
     private void txtDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiskonActionPerformed
@@ -500,6 +563,10 @@ public class transaksi extends javax.swing.JFrame {
     private void txtKembalianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKembalianActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtKembalianActionPerformed
+
+    private void tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tambahActionPerformed
 
     /**
      * @param args the command line arguments
@@ -556,7 +623,6 @@ public class transaksi extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JButton simpan;
     private javax.swing.JButton tambah;
     private javax.swing.JTextField txtBayar;
@@ -571,6 +637,7 @@ public class transaksi extends javax.swing.JFrame {
     private javax.swing.JTextField txtNamaCustomer;
     private javax.swing.JTextField txtNoTransaksi;
     private javax.swing.JTextField txtTampil;
+    private javax.swing.JTextField txtTanggal;
     private javax.swing.JTextField txtTotalBayar;
     // End of variables declaration//GEN-END:variables
 }
