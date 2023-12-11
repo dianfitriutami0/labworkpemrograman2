@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -21,18 +22,43 @@ public class transaksi extends javax.swing.JFrame {
     String Tanggal;
     private DefaultTableModel model;
     
-    public void totalBiaya(){
-        int jumlahBaris = jTable1.getRowCount();
-        int totalBiaya = 0;
-        int jumlahBarang, hargaBarang;
-        for (int i = 0; i < jumlahBaris; i++){
-            jumlahBarang = Integer.parseInt(jTable1.getValueAt(i, 3).toString());
-            hargaBarang = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
-            totalBiaya = totalBiaya + (jumlahBarang * hargaBarang);
-        }
-        txtTotalBayar.setText(String.valueOf(totalBiaya));
-        txtTampil.setText("Rp " + totalBiaya + ",00");
+    public void tambahTransaksi() {
+    int jumlahBaris = jTable1.getRowCount();
+    int totalBiaya = 0;
+    int jumlahBarang, hargaBarang;
+
+    int jumlah, harga;
+    double total;
+
+    jumlah = Integer.valueOf(txtJumlah.getText());
+    harga = Integer.valueOf(txtHarga.getText());
+    total = jumlah * harga;
+
+    String status = (String) txtMember.getSelectedItem();
+
+    double discountPercentage = 0.0;
+    if ("Member".equals(status)) {
+        discountPercentage = 0.1; // 10% discount for members
     }
+
+    double discount = total * discountPercentage;
+    total -= discount;
+
+    txtTotalBayar.setText(String.valueOf(total));
+    txtDiskon.setText(String.valueOf(discount));
+
+    for (int i = 0; i < jumlahBaris; i++) {
+        jumlahBarang = Integer.parseInt(jTable1.getValueAt(i, 3).toString());
+        hargaBarang = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
+        totalBiaya = totalBiaya + (jumlahBarang * hargaBarang);
+    }
+
+    txtTampil.setText("Rp " + totalBiaya + ",00");
+
+    loadData();
+    clear2();
+    txtIdBarang.requestFocus();
+}
     
     private void autonumber(){
         try{
@@ -109,20 +135,59 @@ public class transaksi extends javax.swing.JFrame {
         txtJumlah.setText("");
     }
     
-    public void tambahTransaksi(){
-        int jumlah, harga, total;
-        
-        jumlah = Integer.valueOf(txtJumlah.getText());
-        harga = Integer.valueOf(txtHarga.getText());
-        total = jumlah * harga;
-        
-        txtTotalBayar.setText(String.valueOf(total));
-        
-        loadData();
-        totalBiaya();
-        clear2();
-        txtIdBarang.requestFocus();
+    public String getStatusPelanggan(String idPelanggan) {
+    String status = "Non Member"; // Default jika tidak ditemukan atau tidak ada koneksi
+
+    try {
+        java.sql.Connection kon = (Connection) konektor.koneksi();
+        String query = "SELECT status FROM datamember WHERE id_member = ?";
+        PreparedStatement statement = kon.prepareStatement(query);
+        statement.setString(1, idPelanggan);
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            status = resultSet.getString("status");
+        } else {
+            JOptionPane.showMessageDialog(null, "Tidak ada member dengan ID " + idPelanggan);
+        }
+
+        resultSet.close();
+        statement.close();
+        kon.close();
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+
+    return status;
+}
+
+    
+    
+
+    
+    private void updateInventory() {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    int rowCount = model.getRowCount();
+
+    try {
+        Connection kon = konektor.koneksi();
+        for (int i = 0; i < rowCount; i++) {
+            String idBarang = (String) model.getValueAt(i, 1);
+            int jumlah = Integer.parseInt(model.getValueAt(i, 3).toString());
+
+            // Query to update the inventory
+            String updateInventoryQuery = "UPDATE inventori SET stok = stok - ? WHERE id_barang = ?";
+            PreparedStatement updateInventoryStatement = kon.prepareStatement(updateInventoryQuery);
+            updateInventoryStatement.setInt(1, jumlah);
+            updateInventoryStatement.setString(2, idBarang);
+            updateInventoryStatement.executeUpdate();
+            updateInventoryStatement.close();
+        }
+    } catch (Exception e) {
+        System.out.println("Update inventory error: " + e.getMessage());
+    }
+}
     
     public transaksi() {
         initComponents();
@@ -255,6 +320,11 @@ public class transaksi extends javax.swing.JFrame {
 
         txtMember.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         txtMember.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Member", "Non Member" }));
+        txtMember.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMemberActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel5.setText("Tanggal");
@@ -308,17 +378,37 @@ public class transaksi extends javax.swing.JFrame {
 
         hapus.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         hapus.setText("Hapus");
+        hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusActionPerformed(evt);
+            }
+        });
 
         simpan.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         simpan.setText("Simpan");
+        simpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                simpanActionPerformed(evt);
+            }
+        });
 
         txtTampil.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        txtTampil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTampilActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel10.setText("Total Bayar");
 
         txtTotalBayar.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         txtTotalBayar.setEnabled(false);
+        txtTotalBayar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTotalBayarActionPerformed(evt);
+            }
+        });
 
         jLabel12.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         jLabel12.setText("Diskon");
@@ -338,6 +428,11 @@ public class transaksi extends javax.swing.JFrame {
         });
 
         txtBayar.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        txtBayar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBayarActionPerformed(evt);
+            }
+        });
 
         txtKembalian.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         txtKembalian.setEnabled(false);
@@ -557,7 +652,7 @@ public class transaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_txtJumlahActionPerformed
 
     private void txtDiskonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiskonActionPerformed
-        // TODO add your handling code here:
+tambahTransaksi();        // TODO add your handling code here:
     }//GEN-LAST:event_txtDiskonActionPerformed
 
     private void txtKembalianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKembalianActionPerformed
@@ -565,8 +660,97 @@ public class transaksi extends javax.swing.JFrame {
     }//GEN-LAST:event_txtKembalianActionPerformed
 
     private void tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahActionPerformed
-        // TODO add your handling code here:
+tambahTransaksi(); 
+// TODO add your handling code here:
     }//GEN-LAST:event_tambahActionPerformed
+
+    private void hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusActionPerformed
+DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+int row = jTable1.getSelectedRow();
+model.removeRow(row);
+tambahTransaksi();
+txtBayar.setText("0");
+txtKembalian.setText("0");
+// TODO add your handling code here:
+    }//GEN-LAST:event_hapusActionPerformed
+
+    private void txtBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBayarActionPerformed
+        // TODO add your handling code here:
+        try {
+            int total, bayar, kembalian;
+
+            total = (int) Double.parseDouble(txtTotalBayar.getText());
+            bayar = (int) Double.parseDouble(txtBayar.getText());
+            
+            if (total > bayar) {
+                JOptionPane.showMessageDialog(null, "Uang tidak cukup untuk melakukan pembayaran");
+            } else {
+                kembalian = bayar - total;
+                txtKembalian.setText(String.valueOf(kembalian));
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Masukkan angka yang valid untuk pembayaran");
+        }
+    
+    }//GEN-LAST:event_txtBayarActionPerformed
+
+    private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        
+        String noTransaksi = txtNoTransaksi.getText();
+        String tanggal = txtTanggal.getText();
+        String IDCustomer = txtIdCustomer.getText();
+        String Member = (String) txtMember.getSelectedItem();
+        String total = txtTotalBayar.getText();
+        
+        try{
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            String sql = "INSERT INTO datapenjualan VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement p = kon.prepareStatement(sql);
+            p.setString(1, noTransaksi);
+            p.setString(2, tanggal);
+            p.setString(3, IDCustomer);
+            p.setString(4, Member);
+            p.setString(5, total);
+            p.executeUpdate();
+            p.close();
+        }catch (Exception e) {
+            System.out.println("Simpan penjualan error");
+        }
+        
+        try{
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            int baris = jTable1.getRowCount();
+            
+            for (int i = 0; i<baris; i++){
+                String sql = "INSERT INTO penjualan(Nofaktur, id_barang_nama_barang, jumlah, harga, total) VALUES('"+jTable1.getValueAt(i, 0) + "'+'"+jTable1.getValueAt(i, 1)+"'+'"+jTable1.getValueAt(i, 2)+"'+'"+jTable1.getValueAt(1, 3)+"'+'"+jTable1.getValueAt(i, 4)+"'+'"+jTable1.getValueAt(i, 5)+"')";
+                PreparedStatement p = kon.prepareStatement(sql);
+                p.executeUpdate();
+                p.close();
+            }
+        }catch (Exception e){
+            System.out.println("simpan penjualan error");
+        }
+        clear();
+        utama();
+        autonumber();
+        kosong();
+        updateInventory();
+        txtTampil.setText("Rp. 0");
+    }//GEN-LAST:event_simpanActionPerformed
+
+    private void txtTotalBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalBayarActionPerformed
+tambahTransaksi();        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalBayarActionPerformed
+
+    private void txtMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMemberActionPerformed
+     // TODO add your handling code here:
+    }//GEN-LAST:event_txtMemberActionPerformed
+
+    private void txtTampilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTampilActionPerformed
+tambahTransaksi();        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTampilActionPerformed
 
     /**
      * @param args the command line arguments
