@@ -22,48 +22,52 @@ public class transaksi extends javax.swing.JFrame {
     String Tanggal;
     private DefaultTableModel model;
     
-    public void tambahTransaksi() {
+   public void tambahTransaksi() {
+    // Ambil jumlah baris pada jTable1
     int jumlahBaris = jTable1.getRowCount();
+
+    // Inisialisasi variabel
     int totalBiaya = 0;
-    int jumlahBarang, hargaBarang;
+    double totalSemua = 0.0;
 
-    int jumlah, harga;
-    double total;
-    double totalBayar;
+    // Ambil nilai dari input jumlah dan harga
+    int jumlah = Integer.parseInt(txtJumlah.getText());
+    int harga = Integer.parseInt(txtHarga.getText());
 
-    jumlah = Integer.parseInt(txtJumlah.getText());
-    harga = Integer.parseInt(txtHarga.getText());
-    total = jumlah * harga;
-    
+    // Hitung total untuk barang yang sedang ditambahkan
+    double total = jumlah * harga;
 
+    // Update nilai totalBayar dan diskon
     String status = (String) txtMember.getSelectedItem();
-
-    double discountPercentage = 0.0;
-    if ("Member".equals(status)) {
-        discountPercentage = 0.1; // 10% discount for members
-    }
-
+    double discountPercentage = "Member".equals(status) ? 0.1 : 0.0;
     double discount = total * discountPercentage;
-    totalBayar = total - discount;
-//    total -= discount;
+    double totalBayar = total - discount;
 
-
-    txtTotalBayar.setText(String.valueOf(total));
-    txtDiskon.setText(String.valueOf(discount));
-
+    // Loop untuk menghitung totalSemua dari jTable1
     for (int i = 0; i < jumlahBaris; i++) {
-        jumlahBarang = Integer.parseInt(jTable1.getValueAt(i, 3).toString());
-        hargaBarang = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
-        totalBiaya = totalBiaya + (jumlahBarang * hargaBarang);
+        int jumlahBarang = Integer.parseInt(jTable1.getValueAt(i, 3).toString());
+        int hargaBarang = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
+        totalBiaya += jumlahBarang * hargaBarang;
+        totalSemua += Double.parseDouble(jTable1.getValueAt(i, 5).toString());
     }
 
-    txtTampil.setText("Rp " + totalBayar + ",00");
+    // Menampilkan totalBiaya pada kolom total di jTable1
+    jTable1.setValueAt(totalBiaya, 0, 5);
 
+    // Menampilkan totalSemua pada txtTotalBayar
+    txtTotalBayar.setText(String.valueOf(totalSemua));
+
+    // Menampilkan totalBayar pada txtTampil
+    txtTampil.setText("Rp " + (totalSemua - discount) + ",00");
+
+    // Load data, clear form, dan fokus ke txtIdBarang
     loadData();
     clear2();
     txtIdBarang.requestFocus();
 }
-    
+
+
+
     private void autonumber(){
         try{
             java.sql.Connection kon = (Connection) konektor.koneksi();
@@ -94,17 +98,36 @@ public class transaksi extends javax.swing.JFrame {
         }
     }
     
-    public void loadData(){
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-        model.addRow(new Object[]{
-            txtNoTransaksi.getText(),
-            txtIdBarang.getText(),
-            txtNamaBarang.getText(),
-            txtJumlah.getText(),
-            txtHarga.getText(),
-            txtTotalBayar.getText()
-            
-    });}
+    public void loadData() {
+    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+    int jumlahBaris = model.getRowCount();
+
+    // Ambil nilai dari input jumlah dan harga
+    int jumlah = Integer.parseInt(txtJumlah.getText());
+    int harga = Integer.parseInt(txtHarga.getText());
+
+    // Hitung total untuk barang yang sedang ditambahkan
+    double total = jumlah * harga;
+
+    // Loop untuk menghitung totalBiaya dari jTable1
+    int totalBiaya = 0;
+    for (int i = 0; i < jumlahBaris; i++) {
+        int jumlahBarang = Integer.parseInt(model.getValueAt(i, 3).toString());
+        int hargaBarang = Integer.parseInt(model.getValueAt(i, 4).toString());
+        totalBiaya += jumlahBarang * hargaBarang;
+    }
+
+    // Tambahkan data ke jTable1
+    model.addRow(new Object[]{
+        txtNoTransaksi.getText(),
+        txtIdBarang.getText(),
+        txtNamaBarang.getText(),
+        txtJumlah.getText(),
+        txtHarga.getText(),
+        totalBiaya  // Perbarui nilai total di kolom total
+    });
+}
+
     
     public void kosong(){
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -214,6 +237,7 @@ public class transaksi extends javax.swing.JFrame {
         txtKembalian.setText("0");
         txtIdCustomer.requestFocus();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -705,40 +729,50 @@ txtKembalian.setText("0");
         String Member = (String) txtMember.getSelectedItem();
         String total = txtTotalBayar.getText();
         
-        try{
-            java.sql.Connection kon = (Connection) konektor.koneksi();
-            String sql = "INSERT INTO datapenjualan VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement p = kon.prepareStatement(sql);
-            p.setString(1, noTransaksi);
-            p.setString(2, tanggal);
-            p.setString(3, IDCustomer);
-            p.setString(4, Member);
-            p.setString(5, total);
-            p.executeUpdate();
-            p.close();
-        }catch (Exception e) {
-            System.out.println("Simpan penjualan error");
-        }
-        
-        try{
-            java.sql.Connection kon = (Connection) konektor.koneksi();
-            int baris = jTable1.getRowCount();
-            
-            for (int i = 0; i<baris; i++){
-                String sql = "INSERT INTO penjualan(Nofaktur, id_barang_nama_barang, jumlah, harga, total) VALUES('"+jTable1.getValueAt(i, 0) + "'+'"+jTable1.getValueAt(i, 1)+"'+'"+jTable1.getValueAt(i, 2)+"'+'"+jTable1.getValueAt(1, 3)+"'+'"+jTable1.getValueAt(i, 4)+"'+'"+jTable1.getValueAt(i, 5)+"')";
-                PreparedStatement p = kon.prepareStatement(sql);
-                p.executeUpdate();
-                p.close();
-            }
-        }catch (Exception e){
-            System.out.println("simpan penjualan error");
-        }
+        try {
+    java.sql.Connection kon = (Connection) konektor.koneksi();
+    String sql = "INSERT INTO datapenjualan (NoFaktur, tanggal, id_customer, id_member, totalBeli) VALUES (?, ?, ?, ?, ?)";
+    PreparedStatement p = kon.prepareStatement(sql);
+    p.setString(1, noTransaksi);
+    p.setString(2, tanggal);
+    p.setString(3, IDCustomer);
+    p.setString(4, Member);
+    p.setString(5, total);
+    p.executeUpdate();
+    p.close();
+} catch (Exception e) {
+    e.printStackTrace();
+}
+
+try {
+    java.sql.Connection kon = (Connection) konektor.koneksi();
+    int baris = jTable1.getRowCount();
+
+    for (int i = 0; i < baris; i++) {
+        String sql = "INSERT INTO penjualan (Nofaktur, id_barang, nama_barang, jumlah, harga, total) " +
+                     "VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement p = kon.prepareStatement(sql);
+        p.setString(1, jTable1.getValueAt(i, 0).toString());
+        p.setString(2, jTable1.getValueAt(i, 1).toString());
+        p.setString(3, jTable1.getValueAt(i, 2).toString());
+        p.setString(4, jTable1.getValueAt(i, 3).toString());
+        p.setString(5, jTable1.getValueAt(i, 4).toString());
+        p.setString(6, jTable1.getValueAt(i, 5).toString());
+        p.executeUpdate();
+        p.close();
+    }
+} catch (Exception e) {
+    e.printStackTrace();
+}
         clear();
         utama();
         autonumber();
         kosong();
         updateInventory();
         txtTampil.setText("Rp. 0");
+        
+        
+        
     }//GEN-LAST:event_simpanActionPerformed
 
     private void txtTotalBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalBayarActionPerformed
