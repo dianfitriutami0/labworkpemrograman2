@@ -29,10 +29,12 @@ public class transaksi extends javax.swing.JFrame {
 
     int jumlah, harga;
     double total;
+    double totalBayar;
 
-    jumlah = Integer.valueOf(txtJumlah.getText());
-    harga = Integer.valueOf(txtHarga.getText());
+    jumlah = Integer.parseInt(txtJumlah.getText());
+    harga = Integer.parseInt(txtHarga.getText());
     total = jumlah * harga;
+    
 
     String status = (String) txtMember.getSelectedItem();
 
@@ -42,7 +44,9 @@ public class transaksi extends javax.swing.JFrame {
     }
 
     double discount = total * discountPercentage;
-    total -= discount;
+    totalBayar = total - discount;
+//    total -= discount;
+
 
     txtTotalBayar.setText(String.valueOf(total));
     txtDiskon.setText(String.valueOf(discount));
@@ -53,7 +57,7 @@ public class transaksi extends javax.swing.JFrame {
         totalBiaya = totalBiaya + (jumlahBarang * hargaBarang);
     }
 
-    txtTampil.setText("Rp " + totalBiaya + ",00");
+    txtTampil.setText("Rp " + totalBayar + ",00");
 
     loadData();
     clear2();
@@ -122,6 +126,7 @@ public class transaksi extends javax.swing.JFrame {
     public void clear(){
         txtIdCustomer.setText("");
         txtMember.setSelectedItem("null");
+        txtNamaCustomer.setText("");
         txtTotalBayar.setText("0");
         txtBayar.setText("0");
         txtKembalian.setText("0");
@@ -162,10 +167,6 @@ public class transaksi extends javax.swing.JFrame {
     return status;
 }
 
-    
-    
-
-    
     private void updateInventory() {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     int rowCount = model.getRowCount();
