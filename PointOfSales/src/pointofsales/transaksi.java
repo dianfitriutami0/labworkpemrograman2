@@ -22,12 +22,11 @@ public class transaksi extends javax.swing.JFrame {
     String Tanggal;
     private DefaultTableModel model;
     
-   public void tambahTransaksi() {
+  public void tambahTransaksi() {
     // Ambil jumlah baris pada jTable1
     int jumlahBaris = jTable1.getRowCount();
 
     // Inisialisasi variabel
-    int totalBiaya = 0;
     double totalSemua = 0.0;
 
     // Ambil nilai dari input jumlah dan harga
@@ -35,7 +34,8 @@ public class transaksi extends javax.swing.JFrame {
     int harga = Integer.parseInt(txtHarga.getText());
 
     // Hitung total untuk barang yang sedang ditambahkan
-    double total = jumlah * harga;
+    int totalBiaya = jumlah * harga;
+    double total = totalBiaya;  // TotalBiaya diubah menjadi tipe data double
 
     // Update nilai totalBayar dan diskon
     String status = (String) txtMember.getSelectedItem();
@@ -45,20 +45,15 @@ public class transaksi extends javax.swing.JFrame {
 
     // Loop untuk menghitung totalSemua dari jTable1
     for (int i = 0; i < jumlahBaris; i++) {
-        int jumlahBarang = Integer.parseInt(jTable1.getValueAt(i, 3).toString());
-        int hargaBarang = Integer.parseInt(jTable1.getValueAt(i, 4).toString());
-        totalBiaya += jumlahBarang * hargaBarang;
-        totalSemua += Double.parseDouble(jTable1.getValueAt(i, 5).toString());
+        int totalBaris = Integer.parseInt(jTable1.getValueAt(i, 5).toString());
+        totalSemua += totalBaris;
     }
 
-    // Menampilkan totalBiaya pada kolom total di jTable1
-    jTable1.setValueAt(totalBiaya, 0, 5);
-
-    // Menampilkan totalSemua pada txtTotalBayar
+    // Tampilkan totalSemua pada txtTotalBayar
     txtTotalBayar.setText(String.valueOf(totalSemua));
 
-    // Menampilkan totalBayar pada txtTampil
-    txtTampil.setText("Rp " + (totalSemua - discount) + ",00");
+    // Tampilkan totalBayar pada txtTampil
+    txtTampil.setText("Rp " + (total) + ",00");
 
     // Load data, clear form, dan fokus ke txtIdBarang
     loadData();
@@ -100,22 +95,13 @@ public class transaksi extends javax.swing.JFrame {
     
     public void loadData() {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-    int jumlahBaris = model.getRowCount();
 
     // Ambil nilai dari input jumlah dan harga
     int jumlah = Integer.parseInt(txtJumlah.getText());
     int harga = Integer.parseInt(txtHarga.getText());
 
-    // Hitung total untuk barang yang sedang ditambahkan
-    double total = jumlah * harga;
-
-    // Loop untuk menghitung totalBiaya dari jTable1
-    int totalBiaya = 0;
-    for (int i = 0; i < jumlahBaris; i++) {
-        int jumlahBarang = Integer.parseInt(model.getValueAt(i, 3).toString());
-        int hargaBarang = Integer.parseInt(model.getValueAt(i, 4).toString());
-        totalBiaya += jumlahBarang * hargaBarang;
-    }
+    // Hitung totalBiaya untuk barang yang sedang ditambahkan
+    int totalBiaya = jumlah * harga;
 
     // Tambahkan data ke jTable1
     model.addRow(new Object[]{
@@ -126,6 +112,18 @@ public class transaksi extends javax.swing.JFrame {
         txtHarga.getText(),
         totalBiaya  // Perbarui nilai total di kolom total
     });
+
+    
+    int lastRow = model.getRowCount() - 1;
+
+    // Pastikan ada baris dalam model
+    if (lastRow >= 0) {
+        // Set nilai totalBiaya ke kolom total pada baris terakhir
+        jTable1.setValueAt(totalBiaya, lastRow, 5);
+    } else {
+        // Tidak ada baris dalam model, mungkin perlu menangani ini sesuai kebutuhan Anda
+        System.out.println("Tidak ada baris dalam model.");
+    }
 }
 
     
