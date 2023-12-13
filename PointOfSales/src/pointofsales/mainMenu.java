@@ -252,7 +252,7 @@ new inventoriBarang().setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-new HistoriTransaksi().setVisible(true);
+new historiTransaksi().setVisible(true);
     dispose();          // TODO add your handling code here:
     }//GEN-LAST:event_jButton6ActionPerformed
 

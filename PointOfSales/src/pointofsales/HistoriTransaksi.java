@@ -17,52 +17,51 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author ACER
  */
-public class HistoriTransaksi extends javax.swing.JFrame {
+public class historiTransaksi extends javax.swing.JFrame {
 
     /**
-     * Creates new form HistoriTransaksi
+     * Creates new form historiTransaksi
      */
+    
     private DefaultTableModel model;
-    public HistoriTransaksi() {
+    public historiTransaksi() {
         initComponents();
         loadtable();
         
         try {
-             BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
-             setIconImage(beam); 
+            BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
+            setIconImage(beam); 
         } catch (IOException ex) {
             Logger.getLogger(inventoriBarang.class.getName()).log(Level.SEVERE, null, ex);
         }
-       this.setTitle("Histori Transaksi");
-       setLocationRelativeTo(null);
+        this.setTitle("Histori Transaksi");
+        setLocationRelativeTo(null);
     }
     
-    private void loadtable(){
-    model = new DefaultTableModel();
-    model.addColumn("No Transaksi");
-    model.addColumn("Tanggal");
-    model.addColumn("ID Customer");
-    model.addColumn("Status");
-    model.addColumn("Total Beli");
-    
-    try{
-        String query = "select * from datapenjualan";
-        java.sql.Connection kon = (Connection) konektor.koneksi();
-        java.sql.Statement stm = kon.createStatement();
-        java.sql.ResultSet data = stm.executeQuery(query);
-        
-        while(data.next()){
-           model.addRow(new Object[]{data.getString(1),data.getString(2)
-                   ,data.getString(3),data.getString(4), data.getString(5) });
+    private void loadtable() {
+        model = new DefaultTableModel();
+        model.addColumn("No Transaksi");
+        model.addColumn("Tanggal");
+        model.addColumn("ID Customer");
+        model.addColumn("Status");
+        model.addColumn("Total Beli");
+
+        try {
+            String query = "select * from datapenjualan";
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            java.sql.Statement stm = kon.createStatement();
+            java.sql.ResultSet data = stm.executeQuery(query);
+
+            while (data.next()) {
+                model.addRow(new Object[]{data.getString(1),data.getString(2)
+                     ,data.getString(3),data.getString(4),data.getString(5) 
+                });
+            }
+            jTable1.setModel(model);
+        } catch (Exception b) {
+            JOptionPane.showMessageDialog(null,b.getMessage());
         }
-        jTable1.setModel(model);
     }
-    catch(Exception b){
-        JOptionPane.showMessageDialog(null,b.getMessage());
-    }
-}
-
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -94,17 +93,17 @@ public class HistoriTransaksi extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(187, 187, 187)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 311, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(224, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(225, 225, 225))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(16, 16, 16))
         );
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -134,14 +133,11 @@ public class HistoriTransaksi extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
-                        .addComponent(jButton1)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 661, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,9 +145,9 @@ public class HistoriTransaksi extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -169,13 +165,15 @@ public class HistoriTransaksi extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-new mainMenu().setVisible(true);
-    dispose();          // TODO add your handling code here:
+        new mainMenu().setVisible(true);
+        dispose();          
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
 //    public static void main(String args[]) {
 //        /* Set the Nimbus look and feel */
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -190,20 +188,20 @@ new mainMenu().setVisible(true);
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(HistoriTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(historiTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(HistoriTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(historiTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(HistoriTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(historiTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(HistoriTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(historiTransaksi.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new HistoriTransaksi().setVisible(true);
+//                new historiTransaksi().setVisible(true);
 //            }
 //        });
 //    }

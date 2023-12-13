@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package pointofsales;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 /**
  *
  * @author ACER
@@ -23,6 +25,7 @@ public class inventoriBarang extends javax.swing.JFrame {
     /**
      * Creates new form inventoriBarang
      */
+    
     private DefaultTableModel model;
     public inventoriBarang() {
         initComponents();
@@ -31,44 +34,43 @@ public class inventoriBarang extends javax.swing.JFrame {
         search.setFont(new java.awt.Font("Times New Roman", 1, 18));
         search.setText("SEARCH");
         search.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-        searchActionPerformed(evt);
-        }
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
         });
         try {
-             BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
-             setIconImage(beam); 
+            BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
+            setIconImage(beam); 
         } catch (IOException ex) {
             Logger.getLogger(inventoriBarang.class.getName()).log(Level.SEVERE, null, ex);
         }
-       this.setTitle("Inventory Barang haha");
-       setLocationRelativeTo(null);
+        this.setTitle("Inventory Barang haha");
+        setLocationRelativeTo(null);
     }
     
-    private void loadtable(){
-    model = new DefaultTableModel();
-    model.addColumn("NO");
-    model.addColumn("ID BARANG");
-    model.addColumn("NAMA BARANG");
-    model.addColumn("HARGA");
-    model.addColumn("STOK");
-    
-    try{
-        String query = "select * from inventoribarang";
-        java.sql.Connection kon = (Connection) konektor.koneksi();
-        java.sql.Statement stm = kon.createStatement();
-        java.sql.ResultSet data = stm.executeQuery(query);
-        
-        while(data.next()){
-           model.addRow(new Object[]{data.getString(1),data.getString(2)
-                   ,data.getString(3),data.getString(4), data.getString(5) });
+    private void loadtable() {
+        model = new DefaultTableModel();
+        model.addColumn("NO");
+        model.addColumn("ID BARANG");
+        model.addColumn("NAMA BARANG");
+        model.addColumn("HARGA");
+        model.addColumn("STOK");
+
+        try {
+            String query = "select * from inventoribarang";
+            java.sql.Connection kon = (Connection) konektor.koneksi();
+            java.sql.Statement stm = kon.createStatement();
+            java.sql.ResultSet data = stm.executeQuery(query);
+
+            while (data.next()) {
+                model.addRow(new Object[]{data.getString(1),data.getString(2)
+                     ,data.getString(3),data.getString(4), data.getString(5) });
+            }
+            tblBarang.setModel(model);
+        } catch (Exception b) {
+            JOptionPane.showMessageDialog(null,b.getMessage());
         }
-        tblBarang.setModel(model);
     }
-    catch(Exception b){
-        JOptionPane.showMessageDialog(null,b.getMessage());
-    }
-}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -84,7 +86,7 @@ public class inventoriBarang extends javax.swing.JFrame {
         jComboBox1 = new javax.swing.JComboBox<>();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         input = new javax.swing.JButton();
         edit = new javax.swing.JButton();
         delete = new javax.swing.JButton();
@@ -108,25 +110,25 @@ public class inventoriBarang extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(248, 111, 3));
 
-        jLabel1.setFont(new java.awt.Font("Trajan Pro 3", 1, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Data Inventory");
+        jLabel2.setFont(new java.awt.Font("Trajan Pro 3", 1, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("DATA INVENTORY");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(221, 221, 221))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(244, 244, 244)
+                .addComponent(jLabel2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(18, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         input.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -203,46 +205,45 @@ public class inventoriBarang extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(41, 41, 41)
-                        .addComponent(input)
-                        .addGap(73, 73, 73)
-                        .addComponent(edit)
-                        .addGap(103, 103, 103)
-                        .addComponent(delete)
-                        .addGap(69, 69, 69)
-                        .addComponent(cancel))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(exit)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(search)
-                                .addGap(29, 29, 29)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(exit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(search)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 669, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(51, 51, 51)
+                .addComponent(input)
+                .addGap(78, 78, 78)
+                .addComponent(edit)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(delete)
+                .addGap(67, 67, 67)
+                .addComponent(cancel)
+                .addGap(51, 51, 51))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(input)
                     .addComponent(edit)
                     .addComponent(delete)
                     .addComponent(cancel))
-                .addGap(34, 34, 34)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 269, Short.MAX_VALUE)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(exit)
                     .addComponent(search)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18))
+                .addGap(38, 38, 38))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -260,55 +261,58 @@ public class inventoriBarang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void inputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputActionPerformed
-new inputInventory().setVisible(true);
-    dispose();        // TODO add your handling code here:
+        new inputInventory().setVisible(true);
+        dispose();        
+        // TODO add your handling code here:
     }//GEN-LAST:event_inputActionPerformed
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-String keyword = jTextField1.getText().trim();
-    
-    // Mengecek apakah keyword tidak kosong
-    if (!keyword.isEmpty()) {
-        try {
-            // Membersihkan model tabel sebelum menambahkan data hasil pencarian
-            model.setRowCount(0);
-            
-            // Query pencarian data member berdasarkan ID atau Nama
-            String query = "SELECT * FROM inventoribarang WHERE id_barang LIKE ? OR nama_barang LIKE ?";
-            java.sql.Connection kon = (Connection) konektor.koneksi();
-            try (PreparedStatement ps = kon.prepareStatement(query)) {
-                ps.setString(1, "%" + keyword + "%");
-                ps.setString(2, "%" + keyword + "%");
-                
-                try (ResultSet data = ps.executeQuery()) {
-                    int nomor = 1;
-                    while (data.next()) {
-                        model.addRow(new Object[]{
-                            nomor++,
-                            data.getString("id_barang"),
-                            data.getString("nama_barang"),
-                            data.getString("harga"),
-                            data.getString("stok")
-                        });
+        String keyword = jTextField1.getText().trim();
+
+        // Mengecek apakah keyword tidak kosong
+        if (!keyword.isEmpty()) {
+            try {
+                // Membersihkan model tabel sebelum menambahkan data hasil pencarian
+                model.setRowCount(0);
+
+                // Query pencarian data member berdasarkan ID atau Nama
+                String query = "SELECT * FROM inventoribarang WHERE id_barang LIKE ? OR nama_barang LIKE ?";
+                java.sql.Connection kon = (Connection) konektor.koneksi();
+                try (PreparedStatement ps = kon.prepareStatement(query)) {
+                    ps.setString(1, "%" + keyword + "%");
+                    ps.setString(2, "%" + keyword + "%");
+
+                    try (ResultSet data = ps.executeQuery()) {
+                        int nomor = 1;
+                        while (data.next()) {
+                            model.addRow(new Object[]{
+                                nomor++,
+                                data.getString("id_barang"),
+                                data.getString("nama_barang"),
+                                data.getString("harga"),
+                                data.getString("stok")
+                            });
+                        }
+                    }
+                    if (tblBarang.getRowCount() > 0) {
+                        tblBarang.setRowSelectionInterval(0, 0);
                     }
                 }
-                if (tblBarang.getRowCount() > 0) {
-                tblBarang.setRowSelectionInterval(0, 0);
-            }}
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat mencari data", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat mencari data", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } else {
-        // Menampilkan pesan jika field pencarian kosong
-        JOptionPane.showMessageDialog(this, "Masukkan kata kunci pencarian");
-    }
+            // Menampilkan pesan jika field pencarian kosong
+            JOptionPane.showMessageDialog(this, "Masukkan kata kunci pencarian");
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_searchActionPerformed
 
     private void editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editActionPerformed
-new updateBarang().setVisible(true);
-    dispose();        // TODO add your handling code here:
+        new updateBarang().setVisible(true);
+        dispose();    
+        // TODO add your handling code here:
     }//GEN-LAST:event_editActionPerformed
 
     private void tblBarangComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_tblBarangComponentAdded
@@ -316,47 +320,50 @@ new updateBarang().setVisible(true);
     }//GEN-LAST:event_tblBarangComponentAdded
 
     private void deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteActionPerformed
-    int selectedRow = tblBarang.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Pilih baris yang akan dihapus!");
-    } else {
-        String IDMemberToDelete = tblBarang.getValueAt(selectedRow, 1).toString(); // Menggunakan index kolom ID Member
+        int selectedRow = tblBarang.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Pilih baris yang akan dihapus!");
+        } else {
+            // Menggunakan index kolom ID Member
+            String IDMemberToDelete = tblBarang.getValueAt(selectedRow, 1).toString(); 
+            model.removeRow(selectedRow);
 
-        model.removeRow(selectedRow);
-
-        try {
-            String query = "DELETE FROM inventoribarang WHERE id_barang=?";
-            java.sql.Connection kon = (Connection) konektor.koneksi();
-            try (PreparedStatement ps = kon.prepareStatement(query)) {
-                ps.setString(1, IDMemberToDelete);
-                int result = ps.executeUpdate();
-                if (result > 0) {
-                    JOptionPane.showMessageDialog(this, "Data berhasil dihapus.");
-                } else {
-                    JOptionPane.showMessageDialog(this, "Gagal menghapus data");
+            try {
+                String query = "DELETE FROM inventoribarang WHERE id_barang=?";
+                java.sql.Connection kon = (Connection) konektor.koneksi();
+                try (PreparedStatement ps = kon.prepareStatement(query)) {
+                    ps.setString(1, IDMemberToDelete);
+                    int result = ps.executeUpdate();
+                    if (result > 0) {
+                        JOptionPane.showMessageDialog(this, "Data berhasil dihapus.");
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Gagal menghapus data");
+                    }
                 }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menghapus data", "Error", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(updateMember.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Terjadi kesalahan saat menghapus data", "Error", JOptionPane.ERROR_MESSAGE);
-            Logger.getLogger(updateMember.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
     }//GEN-LAST:event_deleteActionPerformed
 
     private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
-new inventoriBarang().setVisible(true);
-    dispose();        // TODO add your handling code here:
+        new inventoriBarang().setVisible(true);
+        dispose();   
+        // TODO add your handling code here:
     }//GEN-LAST:event_cancelActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-new mainMenu().setVisible(true);
-    dispose();         // TODO add your handling code here:
+        new mainMenu().setVisible(true);
+        dispose();     
+        // TODO add your handling code here:
     }//GEN-LAST:event_exitActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
 //    public static void main(String args[]) {
 //        /* Set the Nimbus look and feel */
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -396,7 +403,7 @@ new mainMenu().setVisible(true);
     private javax.swing.JButton exit;
     private javax.swing.JButton input;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

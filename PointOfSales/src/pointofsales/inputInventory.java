@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package pointofsales;
+
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
+
 /**
  *
  * @author ACER
@@ -20,17 +22,17 @@ public class inputInventory extends javax.swing.JFrame {
     /**
      * Creates new form inputInventory
      */
+    
     public inputInventory() {
         initComponents();
-         try {
-           BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
-             setIconImage(beam); 
+        try {
+            BufferedImage beam = ImageIO.read(getClass().getResource("login.png"));
+            setIconImage(beam); 
         } catch (IOException ex) {
             Logger.getLogger(inputInventory.class.getName()).log(Level.SEVERE, null, ex);
         }
-       this.setTitle("Input Inventory");
-       setLocationRelativeTo(null);
-    
+        this.setTitle("Input Inventory");
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -72,16 +74,16 @@ public class inputInventory extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(211, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(208, 208, 208))
+                .addContainerGap(241, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(241, 241, 241))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
-                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 24)); // NOI18N
@@ -166,47 +168,47 @@ public class inputInventory extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(112, 112, 112)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(112, 112, 112)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(txtIdBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
-                                    .addComponent(txtNamaBarang)
-                                    .addComponent(txtHarga)
-                                    .addComponent(txtPersediaan)))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(exit)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(save)))
-                        .addGap(108, 108, 108))))
+                        .addGap(174, 174, 174)
+                        .addComponent(exit)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtIdBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 253, Short.MAX_VALUE)
+                            .addComponent(txtNamaBarang)
+                            .addComponent(txtHarga)
+                            .addComponent(txtPersediaan))
+                        .addGap(112, 112, 112))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(save)
+                        .addGap(174, 174, 174))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(60, 60, 60)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txtIdBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtNamaBarang, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtPersediaan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -214,8 +216,10 @@ public class inputInventory extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(exit)
                     .addComponent(save))
-                .addGap(38, 38, 38))
+                .addGap(41, 41, 41))
         );
+
+        jPanel2.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -244,7 +248,8 @@ public class inputInventory extends javax.swing.JFrame {
     }//GEN-LAST:event_txtIdBarangActionPerformed
 
     private void txtIdBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtIdBarangMouseClicked
-txtIdBarang.setText(null);        // TODO add your handling code here:
+        txtIdBarang.setText(null);        
+        // TODO add your handling code here:
     }//GEN-LAST:event_txtIdBarangMouseClicked
 
     private void txtNamaBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNamaBarangActionPerformed
@@ -252,55 +257,56 @@ txtIdBarang.setText(null);        // TODO add your handling code here:
     }//GEN-LAST:event_txtNamaBarangActionPerformed
 
     private void txtNamaBarangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtNamaBarangMouseClicked
-txtNamaBarang.setText(null);        // TODO add your handling code here:
+        txtNamaBarang.setText(null);        
+        // TODO add your handling code here:
     }//GEN-LAST:event_txtNamaBarangMouseClicked
 
     private void txtHargaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtHargaMouseClicked
-txtHarga.setText(null);        // TODO add your handling code here:
+        txtHarga.setText(null);        
+        // TODO add your handling code here:
     }//GEN-LAST:event_txtHargaMouseClicked
 
     private void txtPersediaanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtPersediaanMouseClicked
-txtPersediaan.setText(null);        // TODO add your handling code here:
+        txtPersediaan.setText(null);        
+        // TODO add your handling code here:
     }//GEN-LAST:event_txtPersediaanMouseClicked
 
     private void saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveActionPerformed
-String IdBarang = txtIdBarang.getText();
-    String NamaBarang = txtNamaBarang.getText();
-    String Harga = txtHarga.getText();
-    String Persediaan = txtPersediaan.getText();
-    
-    
-    if(IdBarang.equals("")||NamaBarang.equals("")||Harga.equals("")||Persediaan.equals("")){
+        String IdBarang = txtIdBarang.getText();
+        String NamaBarang = txtNamaBarang.getText();
+        String Harga = txtHarga.getText();
+        String Persediaan = txtPersediaan.getText();
+
+        if (IdBarang.equals("")||NamaBarang.equals("")||Harga.equals("")||Persediaan.equals("")) {
             JOptionPane.showMessageDialog(null,"Isi Semua Form Yang Tersedia ");
-        
-    }
-    
-    else{
-        try {
-            String sql1 = String.format("INSERT INTO inventoribarang(id_barang, nama_barang, harga, stok)"
-                    + " VALUES (\"%s\",\"%s\",\"%s\",\"%s\")",txtIdBarang.getText(), txtNamaBarang.getText(), txtHarga.getText(), txtPersediaan.getText());
-            java.sql.Connection kon = (Connection) konektor.koneksi();
-            java.sql.PreparedStatement pdt = kon.prepareStatement(sql1);
-            pdt.execute();
-           JOptionPane.showMessageDialog(null, "Penyimpanan Data Berhasil");
-        new inventoriBarang().setVisible(true);
-        dispose();
-        } catch (Exception b) {
-            JOptionPane.showMessageDialog(this, b.getMessage());
-            b.printStackTrace();
-        }   
-  
-    }          // TODO add your handling code here:
+        } else {
+            try {
+                String sql1 = String.format("INSERT INTO inventoribarang(id_barang, nama_barang, harga, stok)"
+                     + " VALUES (\"%s\",\"%s\",\"%s\",\"%s\")",txtIdBarang.getText(), txtNamaBarang.getText(), txtHarga.getText(), txtPersediaan.getText());
+                java.sql.Connection kon = (Connection) konektor.koneksi();
+                java.sql.PreparedStatement pdt = kon.prepareStatement(sql1);
+                pdt.execute();
+                JOptionPane.showMessageDialog(null, "Penyimpanan Data Berhasil");
+                new inventoriBarang().setVisible(true);
+                dispose();
+            } catch (Exception b) {
+                JOptionPane.showMessageDialog(this, b.getMessage());
+                b.printStackTrace();
+            }   
+        }          
+        // TODO add your handling code here:
     }//GEN-LAST:event_saveActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-new mainMenu().setVisible(true);
-    dispose();        // TODO add your handling code here:
+        new inventoriBarang().setVisible(true);
+        dispose();        
+        // TODO add your handling code here:
     }//GEN-LAST:event_exitActionPerformed
 
     /**
      * @param args the command line arguments
      */
+    
 //    public static void main(String args[]) {
 //        /* Set the Nimbus look and feel */
 //        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
