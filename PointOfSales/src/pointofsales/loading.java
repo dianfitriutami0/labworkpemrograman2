@@ -30,6 +30,7 @@ public class loading extends javax.swing.JFrame {
         }
        
        this.setTitle("Aplikasi Perpustakaan");
+       setLocationRelativeTo(null);
        
         t = new Timer(100, (ActionEvent e) -> {
             count +=5;
