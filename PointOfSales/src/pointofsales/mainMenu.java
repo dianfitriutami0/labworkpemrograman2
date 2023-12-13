@@ -121,6 +121,11 @@ public class mainMenu extends javax.swing.JFrame {
         jButton6.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setText("Transaction History");
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setBackground(new java.awt.Color(51, 102, 255));
         jButton7.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
@@ -235,6 +240,11 @@ new inventoriBarang().setVisible(true);
     
     }           // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+new HistoriTransaksi().setVisible(true);
+    dispose();          // TODO add your handling code here:
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments

@@ -60,7 +60,7 @@ public class login extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(700, 500));
 
-        jPanel1.setBackground(new java.awt.Color(255, 247, 247));
+        jPanel1.setBackground(new java.awt.Color(241, 210, 210));
         jPanel1.setMinimumSize(new java.awt.Dimension(700, 500));
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 500));
 
@@ -150,8 +150,7 @@ public class login extends javax.swing.JFrame {
                         .addGap(13, 13, 13))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(91, 91, 91)
-                        .addComponent(cancel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(cancel)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(71, 71, 71)
