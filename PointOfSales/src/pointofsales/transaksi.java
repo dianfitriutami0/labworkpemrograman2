@@ -23,40 +23,45 @@ public class transaksi extends javax.swing.JFrame {
     private DefaultTableModel model;
     
   public void tambahTransaksi() {
-    // Ambil jumlah baris pada jTable1
-    int jumlahBaris = jTable1.getRowCount();
+    
+    
 
-    // Inisialisasi variabel
+    
     double totalSemua = 0.0;
 
-    // Ambil nilai dari input jumlah dan harga
+    
     int jumlah = Integer.parseInt(txtJumlah.getText());
     int harga = Integer.parseInt(txtHarga.getText());
 
-    // Hitung total untuk barang yang sedang ditambahkan
-    int totalBiaya = jumlah * harga;
-    double total = totalBiaya;  // TotalBiaya diubah menjadi tipe data double
+        int totalBiaya = jumlah * harga;
+    double total = totalBiaya;  
 
     // Update nilai totalBayar dan diskon
     String status = (String) txtMember.getSelectedItem();
-    double discountPercentage = "Member".equals(status) ? 0.1 : 0.0;
-    double discount = total * discountPercentage;
-    double totalBayar = total - discount;
-
-    // Loop untuk menghitung totalSemua dari jTable1
+    
+//    JOptionPane.showMessageDialog(this, "Total1 : " + totalBayar);
+    loadData();
+    int jumlahBaris = jTable1.getRowCount();
+//    JOptionPane.showMessageDialog(this, "Total1 : " + jTable1.getValueAt(0, 5).toString());
+    
     for (int i = 0; i < jumlahBaris; i++) {
         int totalBaris = Integer.parseInt(jTable1.getValueAt(i, 5).toString());
+//        JOptionPane.showMessageDialog(this, "Total2 : " + totalBaris);
         totalSemua += totalBaris;
     }
+    double discountPercentage = "Member".equals(status) ? 0.1 : 0.0;
+    double discount = totalSemua * discountPercentage;
+    double totalBayar = totalSemua - discount;
+    
 
-    // Tampilkan totalSemua pada txtTotalBayar
+//    JOptionPane.showMessageDialog(this, "Total3 : " + totalSemua);
     txtTotalBayar.setText(String.valueOf(totalSemua));
 
-    // Tampilkan totalBayar pada txtTampil
-    txtTampil.setText("Rp " + (total) + ",00");
+   txtDiskon.setText(String.valueOf(discount));
+    txtTampil.setText("Rp" + (totalBayar) + ",00");
 
-    // Load data, clear form, dan fokus ke txtIdBarang
-    loadData();
+    
+    
     clear2();
     txtIdBarang.requestFocus();
 }
@@ -96,32 +101,32 @@ public class transaksi extends javax.swing.JFrame {
     public void loadData() {
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
 
-    // Ambil nilai dari input jumlah dan harga
+    
     int jumlah = Integer.parseInt(txtJumlah.getText());
     int harga = Integer.parseInt(txtHarga.getText());
 
-    // Hitung totalBiaya untuk barang yang sedang ditambahkan
+    
     int totalBiaya = jumlah * harga;
 
-    // Tambahkan data ke jTable1
+    
     model.addRow(new Object[]{
         txtNoTransaksi.getText(),
         txtIdBarang.getText(),
         txtNamaBarang.getText(),
         txtJumlah.getText(),
         txtHarga.getText(),
-        totalBiaya  // Perbarui nilai total di kolom total
+        totalBiaya 
     });
 
     
     int lastRow = model.getRowCount() - 1;
 
-    // Pastikan ada baris dalam model
+    
     if (lastRow >= 0) {
-        // Set nilai totalBiaya ke kolom total pada baris terakhir
+       
         jTable1.setValueAt(totalBiaya, lastRow, 5);
     } else {
-        // Tidak ada baris dalam model, mungkin perlu menangani ini sesuai kebutuhan Anda
+       
         System.out.println("Tidak ada baris dalam model.");
     }
 }
@@ -162,8 +167,7 @@ public class transaksi extends javax.swing.JFrame {
     }
     
     public String getStatusPelanggan(String idPelanggan) {
-    String status = "Non Member"; // Default jika tidak ditemukan atau tidak ada koneksi
-
+    String status = "Non Member"; 
     try {
         java.sql.Connection kon = (Connection) konektor.koneksi();
         String query = "SELECT status FROM datamember WHERE id_member = ?";
@@ -198,7 +202,7 @@ public class transaksi extends javax.swing.JFrame {
             String idBarang = (String) model.getValueAt(i, 1);
             int jumlah = Integer.parseInt(model.getValueAt(i, 3).toString());
 
-            // Query to update the inventory
+            
             String updateInventoryQuery = "UPDATE inventori SET stok = stok - ? WHERE id_barang = ?";
             PreparedStatement updateInventoryStatement = kon.prepareStatement(updateInventoryQuery);
             updateInventoryStatement.setInt(1, jumlah);
@@ -555,13 +559,13 @@ public class transaksi extends javax.swing.JFrame {
                                 .addComponent(simpan)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGap(121, 121, 121)
-                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(27, 27, 27))))
+                                        .addGap(27, 27, 27))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(106, 106, 106)
+                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(txtTampil, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -716,11 +720,15 @@ txtKembalian.setText("0");
     private void txtBayarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBayarActionPerformed
         // TODO add your handling code here:
         try {
-            int total, bayar, kembalian;
-
-            total = (int) Double.parseDouble(txtTotalBayar.getText());
+            int total = 0, bayar, kembalian;
             bayar = (int) Double.parseDouble(txtBayar.getText());
             
+            String[] satu = txtTampil.getText().split("Rp");
+            String[] dua = satu[1].split(",");
+            for(String tes: dua){
+                total += Double.parseDouble(tes);
+            }
+
             if (total > bayar) {
                 JOptionPane.showMessageDialog(null, "Uang tidak cukup untuk melakukan pembayaran");
             } else {
@@ -729,6 +737,7 @@ txtKembalian.setText("0");
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "Masukkan angka yang valid untuk pembayaran");
+            e.printStackTrace();
         }
     
     }//GEN-LAST:event_txtBayarActionPerformed
