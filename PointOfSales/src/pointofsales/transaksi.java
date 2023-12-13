@@ -6,6 +6,7 @@ package pointofsales;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -200,20 +201,26 @@ public class transaksi extends javax.swing.JFrame {
         Connection kon = konektor.koneksi();
         for (int i = 0; i < rowCount; i++) {
             String idBarang = (String) model.getValueAt(i, 1);
-            int jumlah = Integer.parseInt(model.getValueAt(i, 3).toString());
+            String jumlahString = model.getValueAt(i, 3).toString();
 
-            
-            String updateInventoryQuery = "UPDATE inventori SET stok = stok - ? WHERE id_barang = ?";
-            PreparedStatement updateInventoryStatement = kon.prepareStatement(updateInventoryQuery);
-            updateInventoryStatement.setInt(1, jumlah);
-            updateInventoryStatement.setString(2, idBarang);
-            updateInventoryStatement.executeUpdate();
-            updateInventoryStatement.close();
+            // Pemeriksaan agar tidak mengonversi string kosong
+            if (!jumlahString.isEmpty()) {
+                int jumlah = Integer.parseInt(jumlahString);
+
+                String updateInventoryQuery = "UPDATE inventoribarang SET stok = stok - ? WHERE id_barang = ?";
+                try (PreparedStatement updateInventoryStatement = kon.prepareStatement(updateInventoryQuery)) {
+                    updateInventoryStatement.setInt(1, jumlah);
+                    updateInventoryStatement.setString(2, idBarang);
+                    updateInventoryStatement.executeUpdate();
+                    kon.commit();
+                }
+            }
         }
-    } catch (Exception e) {
+    } catch (NumberFormatException | SQLException e) {
         System.out.println("Update inventory error: " + e.getMessage());
     }
 }
+
     
     public transaksi() {
         initComponents();
